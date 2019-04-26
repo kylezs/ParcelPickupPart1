@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.ListIterator;
 
+import automail.Carrier;
 import automail.MailItem;
 import automail.PriorityMailItem;
 import automail.Robot;
@@ -42,12 +43,12 @@ public class MailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
-	private LinkedList<Robot> robots;
+	private LinkedList<Carrier> carriers;
 
 	public MailPool(int nrobots){
 		// Start empty
 		pool = new LinkedList<Item>();
-		robots = new LinkedList<Robot>();
+		carriers = new LinkedList<Carrier>();
 	}
 
 	public void addToPool(MailItem mailItem) {
@@ -59,15 +60,16 @@ public class MailPool implements IMailPool {
 	@Override
 	public void step() throws ItemTooHeavyException {
 		try{
-			ListIterator<Robot> i = robots.listIterator();
+			ListIterator<Carrier> i = carriers.listIterator();
+			// Explicitly cast as Robot in loadRobot
 			while (i.hasNext()) loadRobot(i);
 		} catch (Exception e) { 
             throw e; 
         } 
 	}
 	
-	private void loadRobot(ListIterator<Robot> i) throws ItemTooHeavyException {
-		Robot robot = i.next();
+	private void loadRobot(ListIterator<Carrier> i) throws ItemTooHeavyException {
+		Robot robot = (Robot) i.next();
 		assert(robot.isEmpty());
 		// System.out.printf("P: %3d%n", pool.size());
 		ListIterator<Item> j = pool.listIterator();
@@ -89,7 +91,7 @@ public class MailPool implements IMailPool {
 
 	@Override
 	public void registerWaiting(Robot robot) { // assumes won't be there already
-		robots.add(robot);
+		carriers.add(robot);
 	}
 
 }

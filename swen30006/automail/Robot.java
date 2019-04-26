@@ -106,6 +106,9 @@ public class Robot extends Carrier {
 	                moveTowards(destinationFloor);
     			}
                 break;
+    		case TEAMING:
+    			System.out.println("this robot is currently teaming");
+    			break;
     	}
     }
 
