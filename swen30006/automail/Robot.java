@@ -3,6 +3,7 @@ package automail;
 import exceptions.ExcessiveDeliveryException;
 import exceptions.ItemTooHeavyException;
 import strategies.IMailPool;
+import strategies.MailPool;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -18,7 +19,6 @@ public class Robot extends Carrier {
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING, TEAMING }
     public RobotState currentState;
-    private IMailPool mailPool;
     private boolean receivedDispatch;
     
     private MailItem deliveryItem = null;
@@ -40,7 +40,7 @@ public class Robot extends Carrier {
     	currentState = RobotState.RETURNING;
         currentFloor = Building.MAILROOM_LOCATION;
         this.delivery = delivery;
-        this.mailPool = mailPool;
+        this.mailPool = (MailPool)mailPool;
         this.receivedDispatch = false;
         this.deliveryCounter = 0;
     }
@@ -90,24 +90,15 @@ public class Robot extends Carrier {
                     if(deliveryCounter > 2){  // Implies a simulation bug
                     	throw new ExcessiveDeliveryException();
                     }
-                    /** Check if want to return, i.e. if there is no item in the tube*/
-                    if(tube == null){
-                    	changeState(RobotState.RETURNING);
-                    }
-                    else{
-                        /** If there is another item, set the robot's route to the location to deliver the item */
-                        deliveryItem = tube;
-                        tube = null;
-                        setRoute();
-                        changeState(RobotState.DELIVERING);
-                    }
+                    // head home if no tubeItem
+                    resetAfterDelivery();
     			} else {
 	        		/** The robot is not at the destination yet, move towards it! */
 	                moveTowards(destinationFloor);
     			}
                 break;
     		case TEAMING:
-    			System.out.println("this robot is currently teaming");
+    			//System.out.println("this robot is currently teaming");
     			break;
     	}
     }
@@ -140,7 +131,7 @@ public class Robot extends Carrier {
      * Prints out the change in state
      * @param nextState the state to which the robot is transitioning
      */
-    private void changeState(RobotState nextState){
+    void changeState(RobotState nextState){
     	assert(!(deliveryItem == null && tube != null));
     	if (currentState != nextState) {
             System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), currentState, nextState);
@@ -180,6 +171,38 @@ public class Robot extends Carrier {
 		assert(tube == null);
 		tube = mailItem;
 		if (tube.weight > INDIVIDUAL_MAX_WEIGHT) throw new ItemTooHeavyException();
+	}
+	
+	private void resetAfterDelivery() {
+		/** Check if want to return, i.e. if there is no item in the tube*/
+		if(tube == null){
+        	changeState(RobotState.RETURNING);
+        } else{
+            /** If there is another item, set the robot's route to the location to deliver the item */
+            deliveryItem = tube;
+            tube = null;
+            setRoute();
+            changeState(RobotState.DELIVERING);
+        }
+	}
+	
+	public void addToTeamHand(MailItem mailItem) {
+		assert(deliveryItem == null);
+		deliveryItem = mailItem;
+		deliveryCounter = 0; // reset delivery counter
+		setRoute();
+	}
+	
+	public void finishTeaming() {
+		deliveryItem = null;
+		deliveryCounter = 0;
+		resetAfterDelivery();
+	}
+	
+	public void teamStep() {
+		if (currentFloor != destinationFloor) {
+			moveTowards(destinationFloor);
+		}
 	}
 
 }
