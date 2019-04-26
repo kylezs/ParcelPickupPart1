@@ -12,13 +12,11 @@ import java.util.TreeMap;
 public class Robot extends Carrier {
 	
     static public final int INDIVIDUAL_MAX_WEIGHT = 2000;
-    static public final int PAIR_MAX_WEIGHT = 2600;
-    static public final int TRIPLE_MAX_WEIGHT = 3000;
 
     IMailDelivery delivery;
     protected final String id;
     /** Possible states the robot can be in */
-    public enum RobotState { DELIVERING, WAITING, RETURNING }
+    public enum RobotState { DELIVERING, WAITING, RETURNING, TEAMING }
     public RobotState currentState;
     private IMailPool mailPool;
     private boolean receivedDispatch;
