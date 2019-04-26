@@ -62,27 +62,35 @@ public class MailPool implements IMailPool {
 		try{
 			ListIterator<Carrier> i = carriers.listIterator();
 			// Explicitly cast as Robot in loadRobot
-			while (i.hasNext()) loadRobot(i);
+			while (i.hasNext()) loadCarrier(i);
 		} catch (Exception e) { 
             throw e; 
         } 
 	}
 	
-	private void loadRobot(ListIterator<Carrier> i) throws ItemTooHeavyException {
+	private void loadCarrier(ListIterator<Carrier> i) throws ItemTooHeavyException {
 		Robot robot = (Robot) i.next();
 		assert(robot.isEmpty());
 		// System.out.printf("P: %3d%n", pool.size());
 		ListIterator<Item> j = pool.listIterator();
 		if (pool.size() > 0) {
 			try {
-			robot.addToHand(j.next().mailItem); // hand first as we want higher priority delivered first
-			j.remove();
-			if (pool.size() > 0) {
-				robot.addToTube(j.next().mailItem);
-				j.remove();
-			}
-			robot.dispatch(); // send the robot off if it has any items to deliver
-			i.remove();       // remove from mailPool queue
+				MailItem currMailItem = j.next().mailItem;
+				if (currMailItem.getWeight() > Robot.INDIVIDUAL_MAX_WEIGHT) {
+					System.out.println("Make a team here");
+					// Make the team out of 2 or 3 robots, check against constants in Team class for how many
+				} else {
+					System.out.println("Only need a robot for this");
+					robot.addToHand(currMailItem); // hand first as we want higher priority delivered first
+					j.remove();
+					if (pool.size() > 0) {
+						robot.addToTube(j.next().mailItem);
+						j.remove();
+					}
+					robot.dispatch(); // send the robot off if it has any items to deliver
+					i.remove();       // remove from mailPool queue
+				}
+
 			} catch (Exception e) { 
 	            throw e; 
 	        } 
