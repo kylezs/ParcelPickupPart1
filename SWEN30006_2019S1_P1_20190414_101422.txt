@@ -1,3 +1,0 @@
-ERROR - 10:14:22: java.net.MalformedURLException: unknown protocol: pathmap
-WARNING - 10:14:35: Convert SWEN30006_2019S1_P1
-ERROR - 10:14:35: java.net.MalformedURLException: unknown protocol: pathmap

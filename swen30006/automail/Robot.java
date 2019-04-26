@@ -9,7 +9,7 @@ import java.util.TreeMap;
 /**
  * The robot delivers mail!
  */
-public class Robot {
+public class Robot extends Carrier {
 	
     static public final int INDIVIDUAL_MAX_WEIGHT = 2000;
     static public final int PAIR_MAX_WEIGHT = 2600;
@@ -19,9 +19,7 @@ public class Robot {
     protected final String id;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
-    public RobotState current_state;
-    private int current_floor;
-    private int destination_floor;
+    public RobotState currentState;
     private IMailPool mailPool;
     private boolean receivedDispatch;
     
@@ -40,9 +38,9 @@ public class Robot {
      */
     public Robot(IMailDelivery delivery, IMailPool mailPool){
     	id = "R" + hashCode();
-        // current_state = RobotState.WAITING;
-    	current_state = RobotState.RETURNING;
-        current_floor = Building.MAILROOM_LOCATION;
+        // currentState = RobotState.WAITING;
+    	currentState = RobotState.RETURNING;
+        currentFloor = Building.MAILROOM_LOCATION;
         this.delivery = delivery;
         this.mailPool = mailPool;
         this.receivedDispatch = false;
@@ -58,11 +56,11 @@ public class Robot {
      * @throws ExcessiveDeliveryException if robot delivers more than the capacity of the tube without refilling
      */
     public void step() throws ExcessiveDeliveryException {    	
-    	switch(current_state) {
+    	switch(currentState) {
     		/** This state is triggered when the robot is returning to the mailroom after a delivery */
     		case RETURNING:
     			/** If its current position is at the mailroom, then the robot should change state */
-                if(current_floor == Building.MAILROOM_LOCATION){
+                if(currentFloor == Building.MAILROOM_LOCATION){
                 	if (tube != null) {
                 		mailPool.addToPool(tube);
                         System.out.printf("T: %3d > old addToPool [%s]%n", Clock.Time(), tube.toString());
@@ -86,7 +84,7 @@ public class Robot {
                 }
                 break;
     		case DELIVERING:
-    			if(current_floor == destination_floor){ // If already here drop off either way
+    			if(currentFloor == destinationFloor){ // If already here drop off either way
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(deliveryItem);
                     deliveryItem = null;
@@ -107,7 +105,7 @@ public class Robot {
                     }
     			} else {
 	        		/** The robot is not at the destination yet, move towards it! */
-	                moveTowards(destination_floor);
+	                moveTowards(destinationFloor);
     			}
                 break;
     	}
@@ -118,7 +116,7 @@ public class Robot {
      */
     private void setRoute() {
         /** Set the destination floor */
-        destination_floor = deliveryItem.getDestFloor();
+        destinationFloor = deliveryItem.getDestFloor();
     }
 
     /**
@@ -126,10 +124,10 @@ public class Robot {
      * @param destination the floor towards which the robot is moving
      */
     private void moveTowards(int destination) {
-        if(current_floor < destination){
-            current_floor++;
+        if(currentFloor < destination){
+            currentFloor++;
         } else {
-            current_floor--;
+            currentFloor--;
         }
     }
     
@@ -143,10 +141,10 @@ public class Robot {
      */
     private void changeState(RobotState nextState){
     	assert(!(deliveryItem == null && tube != null));
-    	if (current_state != nextState) {
-            System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
+    	if (currentState != nextState) {
+            System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), currentState, nextState);
     	}
-    	current_state = nextState;
+    	currentState = nextState;
     	if(nextState == RobotState.DELIVERING){
             System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), deliveryItem.toString());
     	}
