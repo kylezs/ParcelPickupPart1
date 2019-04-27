@@ -35,7 +35,6 @@ public class Team extends Carrier {
 			return;
 		}
 		stepCounter = 0;
-		for (Robot robot: robots) robot.teamStep();
 		
 		// ensure all robots are on the same floor
 		int currentFloor = robots.get(0).currentFloor;

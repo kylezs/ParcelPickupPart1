@@ -98,7 +98,7 @@ public class Robot extends Carrier {
     			}
                 break;
     		case TEAMING:
-//    			teamStep();
+    			teamStep();
     			break;
     	}
     }
@@ -199,8 +199,7 @@ public class Robot extends Carrier {
 		resetAfterDelivery();
 	}
 	
-	// can be called on TEAMING case
-	public void teamStep() {
+	private void teamStep() {
 		if (currentFloor != destinationFloor) {
 			moveTowards(destinationFloor);
 		}

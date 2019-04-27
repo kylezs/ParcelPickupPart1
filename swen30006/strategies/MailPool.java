@@ -108,11 +108,13 @@ public class MailPool implements IMailPool {
 			} 
 			// if a team of 2 robots can carry it 
 			else if (item.getWeight() <= Team.PAIR_MAX_WEIGHT && robots.size() >= 2) {
+				System.out.println("Robots.size(): " + robots.size());
 				ArrayList<Robot> temp = new ArrayList<Robot>();
 				for (int k=0; k < 2; k++) {
 					temp.add(robot);
 					i.remove();
-					robot = (Robot) i.next();
+					if (i.hasNext()) robot = (Robot) i.next(); // only for the k=1 looping
+					
 				}
 				// Can also add items to individual robot tubes here
 				automail.carriers.add(new Team(item, temp, this));
