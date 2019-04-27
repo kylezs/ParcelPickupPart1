@@ -14,7 +14,7 @@ public class Robot extends Carrier {
 	
     static public final int INDIVIDUAL_MAX_WEIGHT = 2000;
 
-    IMailDelivery delivery;
+    public IMailDelivery delivery;
     protected final String id;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING, TEAMING }
@@ -35,10 +35,10 @@ public class Robot extends Carrier {
      * @param mailPool is the source of mail items
      */
     public Robot(IMailDelivery delivery, IMailPool mailPool){
-    	id = "R" + hashCode();
+    	this.id = "R" + hashCode();
         // currentState = RobotState.WAITING;
-    	currentState = RobotState.RETURNING;
-        currentFloor = Building.MAILROOM_LOCATION;
+    	this.currentState = RobotState.RETURNING;
+        this.currentFloor = Building.MAILROOM_LOCATION;
         this.delivery = delivery;
         this.mailPool = (MailPool)mailPool;
         this.receivedDispatch = false;
@@ -70,8 +70,8 @@ public class Robot extends Carrier {
                 } else {
                 	/** If the robot is not at the mailroom floor yet, then move towards it! */
                     moveTowards(Building.MAILROOM_LOCATION);
-                	break;
                 }
+                break;
     		case WAITING:
                 /** If the StorageTube is ready and the Robot is waiting in the mailroom then start the delivery */
                 if(!isEmpty() && receivedDispatch){
@@ -98,7 +98,7 @@ public class Robot extends Carrier {
     			}
                 break;
     		case TEAMING:
-    			//System.out.println("this robot is currently teaming");
+//    			teamStep();
     			break;
     	}
     }
@@ -128,10 +128,10 @@ public class Robot extends Carrier {
     }
     
     /**
-     * Prints out the change in state
+     * Prints out the change in state - public so Team can change state of its robots
      * @param nextState the state to which the robot is transitioning
      */
-    void changeState(RobotState nextState){
+    public void changeState(RobotState nextState){
     	assert(!(deliveryItem == null && tube != null));
     	if (currentState != nextState) {
             System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), currentState, nextState);
@@ -199,6 +199,7 @@ public class Robot extends Carrier {
 		resetAfterDelivery();
 	}
 	
+	// can be called on TEAMING case
 	public void teamStep() {
 		if (currentFloor != destinationFloor) {
 			moveTowards(destinationFloor);

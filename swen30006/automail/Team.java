@@ -28,7 +28,6 @@ public class Team extends Carrier {
 	
 	
 	public void step() throws ExcessiveDeliveryException {
-		//System.out.println("Step being called in Team()");
 		
 		// a team moves every 3 time steps
 		if (stepCounter < 2) {
@@ -39,21 +38,25 @@ public class Team extends Carrier {
 		for (Robot robot: robots) robot.teamStep();
 		
 		// ensure all robots are on the same floor
-		int current_floor = robots.get(0).currentFloor;
-		for (Robot robot: robots) assert(robot.currentFloor == current_floor);
+		int currentFloor = robots.get(0).currentFloor;
+		for (Robot robot: robots) assert(robot.currentFloor == currentFloor);
 		
-		if (current_floor == destinationFloor) {
-			/* make one of the robots "deliver" the item, to enable the team to deliver the item
-			 * we would need to give MailPool a reference to the IMailDelivery in simulation
-			 */
-			robots.get(0).delivery.deliver(deliveryItem);
-			
-			// set the robots to either return or deliver their tube item
-			for (Robot robot: robots) {
-				robot.finishTeaming();
-			}
-			mailPool.removeFromAutomail(this);
+		if (currentFloor == destinationFloor) {
+			teamCompleteDelivery();
 		}
+	}
+	
+	private void teamCompleteDelivery() {
+		/* make one of the robots "deliver" the item, to enable the team to deliver the item
+		 * we would need to give MailPool a reference to the IMailDelivery in simulation
+		 */
+		robots.get(0).delivery.deliver(deliveryItem);
+		
+		// set the robots to either return or deliver their tube item
+		for (Robot robot: robots) {
+			robot.finishTeaming();
+		}
+		mailPool.removeFromAutomail(this);
 	}
 
 }

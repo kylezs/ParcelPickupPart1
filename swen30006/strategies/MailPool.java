@@ -114,6 +114,7 @@ public class MailPool implements IMailPool {
 					i.remove();
 					robot = (Robot) i.next();
 				}
+				// Can also add items to individual robot tubes here
 				automail.carriers.add(new Team(item, temp, this));
 				j.remove();
 			} 
@@ -125,6 +126,7 @@ public class MailPool implements IMailPool {
 					i.remove();
 					if (i.hasNext()) robot = (Robot) i.next(); // only for the k=2 looping
 				}
+				// Can also add items to individual robot tubes here
 				automail.carriers.add(new Team(item, temp, this));
 				j.remove();
 			} else {
