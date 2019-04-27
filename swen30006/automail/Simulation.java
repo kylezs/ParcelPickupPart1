@@ -113,9 +113,10 @@ public class Simulation {
             mailGenerator.step();
             try {
                 automail.mailPool.step();
-				for (Carrier carrier: automail.carriers) {
-					System.out.println("Carrier: " + carrier.hashCode() + " step being called");
-					carrier.step();
+//				for (Carrier carrier: automail.carriers) {
+                for (int i = 0; i < automail.carriers.size(); i++) {
+					System.out.println("Carrier: " + automail.carriers.get(i).hashCode() + " step being called");
+					automail.carriers.get(i).step();
 				}
 			} catch (ExcessiveDeliveryException|ItemTooHeavyException e) {
 				e.printStackTrace();

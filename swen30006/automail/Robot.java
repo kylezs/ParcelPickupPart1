@@ -98,6 +98,7 @@ public class Robot extends Carrier {
     			}
                 break;
     		case TEAMING:
+    			System.out.println("Robot teaming, do nothing, controlled by Team");
     			break;
     	}
     }
@@ -185,12 +186,12 @@ public class Robot extends Carrier {
         }
 	}
 	
-	public void addToTeamHand(MailItem mailItem) {
-		assert(deliveryItem == null);
-		deliveryItem = mailItem;
-		deliveryCounter = 0; // reset delivery counter
-		setRoute();
-	}
+//	public void addToTeamHand(MailItem mailItem) {
+//		assert(deliveryItem == null);
+//		deliveryItem = mailItem;
+//		deliveryCounter = 0; // reset delivery counter
+//		setRoute();
+//	}
 	
 	public void finishTeaming() {
 		deliveryItem = null;
@@ -199,8 +200,11 @@ public class Robot extends Carrier {
 	}
 	
 	public void teamStep() {
-		if (currentFloor != destinationFloor) {
+		System.out.println("Inside Robot: Current floor: " + this.currentFloor + "destination Floor: " + this.destinationFloor); 
+		if (this.currentFloor != this.destinationFloor) {
 			moveTowards(destinationFloor);
+		} else {
+			System.out.println("Current floor is destination floor");
 		}
 	}
 

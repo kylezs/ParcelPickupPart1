@@ -2,6 +2,7 @@ package automail;
 
 import java.util.ArrayList;
 
+import automail.Robot.RobotState;
 import exceptions.ExcessiveDeliveryException;
 import strategies.MailPool;
 
@@ -23,48 +24,58 @@ public class Team extends Carrier {
     	stepCounter = 0;
     	for (Robot robot: robots) {
     		robot.changeState(Robot.RobotState.TEAMING);
+    		robot.destinationFloor = this.destinationFloor;
     	}
     }
 	
 	
 	public void step() throws ExcessiveDeliveryException {
-		System.out.println("Team step(), currentFloor: " + currentFloor);
+		System.out.println("Team step() call #" + stepCounter + ", currentFloor: " + currentFloor + " ; destinationFloor: " + destinationFloor);
 		// a team moves every 3 time steps
 		if (stepCounter < 2) {
 			stepCounter++;
 			return;
 		}
 		stepCounter = 0;
-		System.out.println("0th robot floor before: " + robots.get(0).currentFloor);
-		for (Robot robot: robots) robot.teamStep();
-		
-		System.out.println("0th robot floor after: " + robots.get(0).currentFloor);
-		int currentFloor = robots.get(0).currentFloor;
-		this.currentFloor = currentFloor;
 		
 		// ensure all robots are on the same floor
-		for (Robot robot: robots) assert(robot.currentFloor == currentFloor);
+		for (Robot robot: robots) assert(robot.currentFloor == currentFloor && robot.currentState == RobotState.TEAMING);
 		
+		for (Robot robot: robots) assert(robot.destinationFloor == this.destinationFloor);
 		
+		// move the robots AND the team up by a floor
+		for (Robot robot: robots) robot.teamStep();
+		this.moveTowards();
 		
-		
-		
-		if (currentFloor == destinationFloor) {
+        
+		if (this.currentFloor == this.destinationFloor) {
+			System.out.println("Completing delivery");
 			teamCompleteDelivery();
 		}
+		
+		
+	}
+	
+	private void moveTowards() {
+        if(this.currentFloor < this.destinationFloor){
+            this.currentFloor++;
+        } else {
+            this.currentFloor--;
+        }
+
 	}
 	
 	private void teamCompleteDelivery() {
 		/* make one of the robots "deliver" the item, to enable the team to deliver the item
 		 * we would need to give MailPool a reference to the IMailDelivery in simulation
 		 */
-		robots.get(0).delivery.deliver(deliveryItem);
+		this.robots.get(0).delivery.deliver(deliveryItem);
 		
 		// set the robots to either return or deliver their tube item
 		for (Robot robot: robots) {
 			robot.finishTeaming();
 		}
-		mailPool.removeFromAutomail(this);
+		this.mailPool.removeFromAutomail(this);
 	}
 
 }
