@@ -7,6 +7,8 @@ import strategies.Automail;
 import strategies.IMailPool;
 import strategies.MailPool;
 
+import java.io.PrintStream;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,15 @@ public class Simulation {
     private static double total_score = 0;
 
     public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        // Creating a File object that represents the disk file. 
+        PrintStream o = new PrintStream(new File("./last_output.txt")); 
+  
+        // Store current System.out before assigning a new value 
+//        PrintStream console = System.out; 
+  
+        // Assign o to output stream 
+        System.setOut(o); 
+    	
     	Properties automailProperties = new Properties();
 		// Default properties
     	// automailProperties.setProperty("Robots", "Big,Careful,Standard,Weak");
@@ -102,7 +113,10 @@ public class Simulation {
             mailGenerator.step();
             try {
                 automail.mailPool.step();
-				for (Carrier carrier: automail.carriers) carrier.step();
+				for (Carrier carrier: automail.carriers) {
+					System.out.println("Carrier: " + carrier.hashCode() + " step being called");
+					carrier.step();
+				}
 			} catch (ExcessiveDeliveryException|ItemTooHeavyException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");

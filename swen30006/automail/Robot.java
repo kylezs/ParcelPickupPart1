@@ -98,7 +98,6 @@ public class Robot extends Carrier {
     			}
                 break;
     		case TEAMING:
-    			teamStep();
     			break;
     	}
     }
@@ -117,9 +116,9 @@ public class Robot extends Carrier {
      */
     private void moveTowards(int destination) {
         if(currentFloor < destination){
-            currentFloor++;
+            this.currentFloor++;
         } else {
-            currentFloor--;
+            this.currentFloor--;
         }
     }
     
@@ -199,7 +198,7 @@ public class Robot extends Carrier {
 		resetAfterDelivery();
 	}
 	
-	private void teamStep() {
+	public void teamStep() {
 		if (currentFloor != destinationFloor) {
 			moveTowards(destinationFloor);
 		}

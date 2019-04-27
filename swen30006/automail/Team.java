@@ -28,17 +28,26 @@ public class Team extends Carrier {
 	
 	
 	public void step() throws ExcessiveDeliveryException {
-		
+		System.out.println("Team step(), currentFloor: " + currentFloor);
 		// a team moves every 3 time steps
 		if (stepCounter < 2) {
 			stepCounter++;
 			return;
 		}
 		stepCounter = 0;
+		System.out.println("0th robot floor before: " + robots.get(0).currentFloor);
+		for (Robot robot: robots) robot.teamStep();
+		
+		System.out.println("0th robot floor after: " + robots.get(0).currentFloor);
+		int currentFloor = robots.get(0).currentFloor;
+		this.currentFloor = currentFloor;
 		
 		// ensure all robots are on the same floor
-		int currentFloor = robots.get(0).currentFloor;
 		for (Robot robot: robots) assert(robot.currentFloor == currentFloor);
+		
+		
+		
+		
 		
 		if (currentFloor == destinationFloor) {
 			teamCompleteDelivery();
