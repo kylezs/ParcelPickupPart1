@@ -30,13 +30,6 @@ public class Simulation {
 
     public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         // Creating a File object that represents the disk file. 
-        PrintStream o = new PrintStream(new File("./last_output.txt")); 
-  
-        // Store current System.out before assigning a new value 
-//        PrintStream console = System.out; 
-  
-        // Assign o to output stream 
-        System.setOut(o); 
     	
     	Properties automailProperties = new Properties();
 		// Default properties
