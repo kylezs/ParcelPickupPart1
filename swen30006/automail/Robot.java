@@ -114,10 +114,10 @@ public class Robot extends Carrier {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) {
+    public void moveTowards(int destination) {
         if(currentFloor < destination){
             this.currentFloor++;
-        } else {
+        } else if (currentFloor > destination ){
             this.currentFloor--;
         }
     }
@@ -190,15 +190,4 @@ public class Robot extends Carrier {
 		deliveryCounter = 0;
 		resetAfterDelivery();
 	}
-	
-	public void teamStep() {
-//		System.out.println("Inside Robot: Current floor: " + this.currentFloor + "destination Floor: " + this.destinationFloor); 
-		if (this.currentFloor != this.destinationFloor) {
-			moveTowards(destinationFloor);
-		} else {
-			;
-//			System.out.println("Current floor is destination floor");
-		}
-	}
-
 }

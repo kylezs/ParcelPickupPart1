@@ -42,19 +42,16 @@ public class Team extends Carrier {
 		for (Robot robot: robots) assert(robot.destinationFloor == this.destinationFloor);
 		
 		// move the robots AND the team up by a floor
-		for (Robot robot: robots) robot.teamStep();
 		this.moveTowards();
-		
         
 		if (this.currentFloor == this.destinationFloor) {
 //			System.out.println("Completing delivery");
 			teamCompleteDelivery();
 		}
-		
-		
 	}
 	
 	private void moveTowards() {
+		for (Robot robot: robots) robot.moveTowards(this.destinationFloor);
         if(this.currentFloor < this.destinationFloor){
             this.currentFloor++;
         } else if (this.currentFloor > this.destinationFloor) {
