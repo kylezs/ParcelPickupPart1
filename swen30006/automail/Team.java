@@ -32,14 +32,14 @@ public class Team extends Carrier {
 	public void step() throws ExcessiveDeliveryException {
 		System.out.println("Team step() call #" + stepCounter + ", currentFloor: " + currentFloor + " ; destinationFloor: " + destinationFloor);
 		// a team moves every 3 time steps
-		if (stepCounter < 2) {
-			stepCounter++;
+		if (this.stepCounter < 2) {
+			this.stepCounter++;
 			return;
 		}
-		stepCounter = 0;
+		this.stepCounter = 0;
 		
 		// ensure all robots are on the same floor
-		for (Robot robot: robots) assert(robot.currentFloor == currentFloor && robot.currentState == RobotState.TEAMING);
+		for (Robot robot: robots) assert(robot.currentFloor == this.currentFloor && robot.currentState == RobotState.TEAMING);
 		
 		for (Robot robot: robots) assert(robot.destinationFloor == this.destinationFloor);
 		
