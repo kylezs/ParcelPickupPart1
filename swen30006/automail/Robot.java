@@ -21,7 +21,6 @@ public class Robot extends Carrier {
     public RobotState currentState;
     private boolean receivedDispatch;
     
-    private MailItem deliveryItem = null;
     private MailItem tube = null;
     
     private int deliveryCounter;

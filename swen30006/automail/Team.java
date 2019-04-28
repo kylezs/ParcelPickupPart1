@@ -12,8 +12,6 @@ public class Team extends Carrier {
     
     private int stepCounter;
     
-    private MailItem deliveryItem;
-    
     private ArrayList<Robot> robots;
     
     public Team(MailItem deliveryItem, ArrayList<Robot> robots, MailPool mailPool) {
