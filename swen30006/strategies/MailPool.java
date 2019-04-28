@@ -71,7 +71,7 @@ public class MailPool implements IMailPool {
 	@Override
 	public void step() throws ItemTooHeavyException {
 		try{
-			System.out.println("Step being called in mailPool");
+//			System.out.println("Step being called in mailPool");
 			ListIterator<Robot> i = robots.listIterator();
 			// Explicitly cast as Robot in loadRobot
 			while (i.hasNext()) loadRobot(i);
@@ -109,7 +109,7 @@ public class MailPool implements IMailPool {
 			} 
 			// if a team of 2 robots can carry it 
 			else if (item.getWeight() <= Team.PAIR_MAX_WEIGHT && robots.size() >= 2) {
-				System.out.println("Robots.size(): " + robots.size());
+//				System.out.println("Robots.size(): " + robots.size());
 				ArrayList<Robot> temp = new ArrayList<Robot>();
 				for (int k=0; k < 2; k++) {
 					temp.add(robot);
@@ -133,7 +133,7 @@ public class MailPool implements IMailPool {
 				automail.carriers.add(new Team(item, temp, this));
 				j.remove();
 			} else {
-				System.out.println("Robot: " + robot.hashCode() + " robot status: " + robot.currentState);
+//				System.out.println("Robot: " + robot.hashCode() + " robot status: " + robot.currentState);
 				System.out.println(String.format("Item %s is too heavy for any carrier, or not enough robots exist to make a team", item.toString()));
 			}
 		}

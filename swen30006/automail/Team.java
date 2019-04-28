@@ -30,7 +30,7 @@ public class Team extends Carrier {
 	
 	
 	public void step() throws ExcessiveDeliveryException {
-		System.out.println("Team step() call #" + stepCounter + ", currentFloor: " + currentFloor + " ; destinationFloor: " + destinationFloor);
+//		System.out.println("Team step() call #" + stepCounter + ", currentFloor: " + currentFloor + " ; destinationFloor: " + destinationFloor);
 		// a team moves every 3 time steps
 		if (this.stepCounter < 2) {
 			this.stepCounter++;
@@ -49,7 +49,7 @@ public class Team extends Carrier {
 		
         
 		if (this.currentFloor == this.destinationFloor) {
-			System.out.println("Completing delivery");
+//			System.out.println("Completing delivery");
 			teamCompleteDelivery();
 		}
 		
