@@ -186,13 +186,6 @@ public class Robot extends Carrier {
         }
 	}
 	
-//	public void addToTeamHand(MailItem mailItem) {
-//		assert(deliveryItem == null);
-//		deliveryItem = mailItem;
-//		deliveryCounter = 0; // reset delivery counter
-//		setRoute();
-//	}
-	
 	public void finishTeaming() {
 		deliveryItem = null;
 		deliveryCounter = 0;
