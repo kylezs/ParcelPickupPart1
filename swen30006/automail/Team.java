@@ -59,10 +59,9 @@ public class Team extends Carrier {
 	private void moveTowards() {
         if(this.currentFloor < this.destinationFloor){
             this.currentFloor++;
-        } else {
+        } else if (this.currentFloor > this.destinationFloor) {
             this.currentFloor--;
         }
-
 	}
 	
 	private void teamCompleteDelivery() {
