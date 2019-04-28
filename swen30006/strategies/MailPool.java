@@ -74,13 +74,13 @@ public class MailPool implements IMailPool {
 //			System.out.println("Step being called in mailPool");
 			ListIterator<Robot> i = robots.listIterator();
 			// Explicitly cast as Robot in loadRobot
-			while (i.hasNext()) loadRobot(i);
+			while (i.hasNext()) loadCarrier(i);
 		} catch (Exception e) { 
             throw e; 
         } 
 	}
 	
-	private void loadRobot(ListIterator<Robot> i) throws ItemTooHeavyException {
+	private void loadCarrier(ListIterator<Robot> i) throws ItemTooHeavyException {
 		Robot robot = i.next();
 		assert(robot.isEmpty());
 		// System.out.printf("P: %3d%n", pool.size());
