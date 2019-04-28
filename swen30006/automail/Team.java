@@ -36,13 +36,13 @@ public class Team extends Carrier {
 		}
 		this.stepCounter = 0;
 		
+		// move the robots AND the team up by a floor
+		this.moveTowards();
+		
 		// ensure all robots are on the same floor
 		for (Robot robot: robots) assert(robot.currentFloor == this.currentFloor && robot.currentState == RobotState.TEAMING);
 		
 		for (Robot robot: robots) assert(robot.destinationFloor == this.destinationFloor);
-		
-		// move the robots AND the team up by a floor
-		this.moveTowards();
         
 		if (this.currentFloor == this.destinationFloor) {
 //			System.out.println("Completing delivery");
@@ -52,11 +52,7 @@ public class Team extends Carrier {
 	
 	private void moveTowards() {
 		for (Robot robot: robots) robot.moveTowards(this.destinationFloor);
-        if(this.currentFloor < this.destinationFloor){
-            this.currentFloor++;
-        } else if (this.currentFloor > this.destinationFloor) {
-            this.currentFloor--;
-        }
+        this.currentFloor = robots.get(0).currentFloor;
 	}
 	
 	private void teamCompleteDelivery() {
