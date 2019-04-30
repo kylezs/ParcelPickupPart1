@@ -1,3 +1,7 @@
+/**
+ * Group W11-7
+ * Student numbers: 911920, 914832
+ */
 package automail;
 
 import java.util.ArrayList;
@@ -28,7 +32,6 @@ public class Team extends Carrier {
 	
 	
 	public void step() throws ExcessiveDeliveryException {
-//		System.out.println("Team step() call #" + stepCounter + ", currentFloor: " + currentFloor + " ; destinationFloor: " + destinationFloor);
 		// a team moves every 3 time steps
 		if (this.stepCounter < 2) {
 			this.stepCounter++;
@@ -45,7 +48,6 @@ public class Team extends Carrier {
 		for (Robot robot: robots) assert(robot.destinationFloor == this.destinationFloor);
         
 		if (this.currentFloor == this.destinationFloor) {
-//			System.out.println("Completing delivery");
 			teamCompleteDelivery();
 		}
 	}

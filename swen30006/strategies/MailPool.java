@@ -1,3 +1,7 @@
+/**
+ * Group W11-7
+ * Student numbers: 911920, 914832
+ */
 package strategies;
 
 import java.util.LinkedList;
@@ -70,8 +74,7 @@ public class MailPool implements IMailPool {
 	
 	@Override
 	public void step() throws ItemTooHeavyException {
-		try{
-//			System.out.println("Step being called in mailPool");
+		try {
 			ListIterator<Robot> i = robots.listIterator();
 			// Explicitly cast as Robot in loadRobot
 			while (i.hasNext()) loadCarrier(i);
@@ -83,7 +86,6 @@ public class MailPool implements IMailPool {
 	private void loadCarrier(ListIterator<Robot> i) throws ItemTooHeavyException {
 		Robot robot = i.next();
 		assert(robot.isEmpty());
-		// System.out.printf("P: %3d%n", pool.size());
 		ListIterator<Item> j = pool.listIterator();
 	
 		if (pool.size() > 0) {
@@ -109,12 +111,12 @@ public class MailPool implements IMailPool {
 			} 
 			// if a team of 2 robots can carry it 
 			else if (item.getWeight() <= Team.PAIR_MAX_WEIGHT && robots.size() >= 2) {
-//				System.out.println("Robots.size(): " + robots.size());
 				ArrayList<Robot> temp = new ArrayList<Robot>();
 				for (int k=0; k < 2; k++) {
 					temp.add(robot);
 					i.remove();
-					if (i.hasNext()) robot = (Robot) i.next(); // only for the k=1 looping
+					// only for the k=1 looping
+					if (i.hasNext()) robot = (Robot) i.next(); 
 					
 				}
 				// Can also add items to individual robot tubes here
@@ -127,13 +129,13 @@ public class MailPool implements IMailPool {
 				for (int k=0; k < 3; k++) {
 					temp.add(robot);
 					i.remove();
-					if (i.hasNext()) robot = (Robot) i.next(); // only for the k=2 looping
+					// only for the k=2 looping
+					if (i.hasNext()) robot = (Robot) i.next(); 
 				}
 				// Can also add items to individual robot tubes here
 				automail.carriers.add(new Team(item, temp, this));
 				j.remove();
 			} else {
-//				System.out.println("Robot: " + robot.hashCode() + " robot status: " + robot.currentState);
 				System.out.println(String.format("Item %s is too heavy for any carrier, or not enough robots exist to make a team", item.toString()));
 			}
 		}

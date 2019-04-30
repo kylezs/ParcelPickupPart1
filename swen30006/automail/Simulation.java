@@ -1,3 +1,8 @@
+/**
+ * Group W11-7
+ * Student numbers: 911920, 914832
+ */
+
 package automail;
 
 import exceptions.ExcessiveDeliveryException;

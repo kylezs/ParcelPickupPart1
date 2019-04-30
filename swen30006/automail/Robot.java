@@ -1,3 +1,8 @@
+/**
+ * Group W11-7
+ * Student numbers: 911920, 914832
+ */
+
 package automail;
 
 import exceptions.ExcessiveDeliveryException;
@@ -97,7 +102,6 @@ public class Robot extends Carrier {
     			}
                 break;
     		case TEAMING:
-//    			System.out.println("Robot teaming, do nothing, controlled by Team");
     			break;
     	}
     }
